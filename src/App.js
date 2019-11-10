@@ -62,9 +62,7 @@ function Menu({buttonName, parentRowIndex}) {
     }
   };
 
-  const myOnKeyDown = (event, itemIndex) => {
-    //console.log('keycode', event.keyCode);
-
+  const itemOnKeyDown = (event, itemIndex) => {
     if (event.keyCode === 13) {
       console.log('enter press fire redux event', itemIndex);
     } else if (event.keyCode === 40) {
@@ -80,10 +78,18 @@ function Menu({buttonName, parentRowIndex}) {
     }
   };
 
+  const itemOnClick = (event, itemIndex) => {
+    // it is mouse click
+    if (event.pageX !== 0 && event.pageY !== 0) {
+      console.log('item click fire redux event', itemIndex);
+    }
+  };
+
   return (
     <div>
       <button
         onClick={event => {
+          // it is mouse click
           if (event.pageX !== 0 && event.pageY !== 0) {
             //test
             console.log('parent buttonicon onclick: ');
@@ -116,8 +122,11 @@ function Menu({buttonName, parentRowIndex}) {
                   ref={element =>
                     (menuItemRefs.current[parentRowIndex + itemIndex] = element)
                   }
+                  onClick={event => {
+                    itemOnClick(event, itemIndex);
+                  }}
                   // we want own index
-                  onKeyDown={event => myOnKeyDown(event, itemIndex)}
+                  onKeyDown={event => itemOnKeyDown(event, itemIndex)}
                 >
                   {item}
                 </li>
@@ -131,8 +140,11 @@ function Menu({buttonName, parentRowIndex}) {
                   ref={element =>
                     (menuItemRefs.current[parentRowIndex + itemIndex] = element)
                   }
+                  onClick={event => {
+                    itemOnClick(event, itemIndex);
+                  }}
                   // we want own index
-                  onKeyDown={event => myOnKeyDown(event, itemIndex)}
+                  onKeyDown={event => itemOnKeyDown(event, itemIndex)}
                 >
                   {item}
                 </li>
