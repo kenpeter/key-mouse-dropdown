@@ -32,7 +32,7 @@ function Menu({buttonName, parentRowIndex}) {
     }
   }, [menuItemActiveIndex, open, parentRowIndex]);
 
-  const buttonClickOutside = event => {
+  const clickOutside = event => {
     if (event.target.nodeName !== 'HTML') {
       setOpen(false);
       return;
@@ -43,13 +43,13 @@ function Menu({buttonName, parentRowIndex}) {
   // close
   useEffect(() => {
     if (open) {
-      document.addEventListener('click', buttonClickOutside);
+      document.addEventListener('click', clickOutside);
     } else {
-      document.removeEventListener('click', buttonClickOutside);
+      document.removeEventListener('click', clickOutside);
     }
 
     return () => {
-      document.removeEventListener('click', buttonClickOutside);
+      document.removeEventListener('click', clickOutside);
     };
   }, [open]);
 
