@@ -31,6 +31,13 @@ function Menu({buttonName, parentRowIndex}) {
     }
   }, [menuItemActiveIndex, open, parentRowIndex]);
 
+  const buttonIconOnClick = (event, parentRowIndex) => {
+    // close it
+    setOpen(!open);
+    // which one to close
+    setCurrRowInd(parentRowIndex);
+  };
+
   // on the button level
   const buttonIconKeyDown = (event, parentRowIndex) => {
     if (event.keyCode === 13) {
@@ -40,11 +47,7 @@ function Menu({buttonName, parentRowIndex}) {
       setOpen(!open);
       setCurrRowInd(parentRowIndex);
     } else if (event.keyCode === 9) {
-      // tab away
-      console.log('tab away');
-
-      setOpen(!open);
-      setCurrRowInd('');
+      // we cannot tab away
     } else if (event.keyCode === 40) {
       //test
       console.log('down arrow');
@@ -59,35 +62,34 @@ function Menu({buttonName, parentRowIndex}) {
     }
   };
 
-  const myOnKeyDown = (event, menuItemActiveIndex) => {
+  const myOnKeyDown = (event, itemIndex) => {
     //console.log('keycode', event.keyCode);
 
     if (event.keyCode === 13) {
-      console.log('enter press fire redux event', menuItemActiveIndex);
+      console.log('enter press fire redux event', itemIndex);
     } else if (event.keyCode === 40) {
-      if (menuItemActiveIndex < Object.keys(menuItems).length - 1) {
+      if (itemIndex < Object.keys(menuItems).length - 1) {
         console.log('down');
-        setMenuItemActiveIndex(menuItemActiveIndex + 1);
+        setMenuItemActiveIndex(itemIndex + 1);
       }
     } else if (event.keyCode === 38) {
-      if (menuItemActiveIndex > 0) {
+      if (itemIndex > 0) {
         console.log('up');
-        setMenuItemActiveIndex(menuItemActiveIndex - 1);
+        setMenuItemActiveIndex(itemIndex - 1);
       }
     }
   };
 
-  //test
-  console.log(
-    'menuItemRefs.current',
-    menuItemRefs.current,
-    'menuItemActiveIndex',
-    menuItemActiveIndex
-  );
-
   return (
     <div>
       <button
+        onClick={event => {
+          if (event.pageX !== 0 && event.pageY !== 0) {
+            //test
+            console.log('parent buttonicon onclick: ');
+            buttonIconOnClick(event, parentRowIndex);
+          }
+        }}
         onKeyDown={event => {
           //test
           console.log('parent buttonicon onkeydown: ');
@@ -114,9 +116,10 @@ function Menu({buttonName, parentRowIndex}) {
                   ref={element =>
                     (menuItemRefs.current[parentRowIndex + itemIndex] = element)
                   }
-                  onKeyDown={event => myOnKeyDown(event, menuItemActiveIndex)}
+                  // we want own index
+                  onKeyDown={event => myOnKeyDown(event, itemIndex)}
                 >
-                  <button>{item}</button>
+                  {item}
                 </li>
               );
             else
@@ -128,9 +131,10 @@ function Menu({buttonName, parentRowIndex}) {
                   ref={element =>
                     (menuItemRefs.current[parentRowIndex + itemIndex] = element)
                   }
-                  onKeyDown={event => myOnKeyDown(event)}
+                  // we want own index
+                  onKeyDown={event => myOnKeyDown(event, itemIndex)}
                 >
-                  <button>{item}</button>
+                  {item}
                 </li>
               );
           })}
