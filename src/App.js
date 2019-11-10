@@ -26,6 +26,7 @@ function Menu({buttonName, parentRowIndex}) {
 
   useEffect(() => {
     if (open && menuItemActiveIndex >= 0 && parentRowIndex !== '') {
+      console.log('focus!!');
       menuItemRefs.current[parentRowIndex + menuItemActiveIndex].focus();
     }
   }, [menuItemActiveIndex, open, parentRowIndex]);
@@ -84,6 +85,7 @@ function Menu({buttonName, parentRowIndex}) {
             if (itemIndex === menuItemActiveIndex)
               return (
                 <li
+                  tabIndex="0"
                   key={itemIndex}
                   style={{
                     listStyle: 'none',
@@ -101,6 +103,7 @@ function Menu({buttonName, parentRowIndex}) {
             else
               return (
                 <li
+                  tabIndex="0"
                   key={itemIndex}
                   style={{listStyle: 'none', padding: '5px'}}
                   ref={element =>
