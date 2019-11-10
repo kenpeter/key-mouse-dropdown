@@ -4,7 +4,7 @@ const AppContext = React.createContext({
   name: 'AppContext'
 });
 
-const createMenuItemRefs = (items, rowInd) => {
+function createMenuItemRefs(items, rowInd) {
   // obj
   let menuItemRefs = {};
   // loop each
@@ -13,7 +13,7 @@ const createMenuItemRefs = (items, rowInd) => {
     menuItemRefs[rowInd + i] = createRef();
   }
   return menuItemRefs;
-};
+}
 
 function Menu({buttonName, parentRowIndex}) {
   const [currRowInd, setCurrRowInd] = useState('');
@@ -59,6 +59,17 @@ function Menu({buttonName, parentRowIndex}) {
     }
   };
 
+  const myOnKeyDown = (event, menuItemActiveIndex) => {
+    //console.log('keycode', event.keyCode);
+
+    if (event.keyCode === 13) {
+      console.log('enter press fire redux event');
+    } else if (event.keyCode === 40) {
+      console.log('down');
+      setMenuItemActiveIndex(menuItemActiveIndex + 1);
+    }
+  };
+
   //test
   console.log(
     'menuItemRefs.current',
@@ -96,6 +107,7 @@ function Menu({buttonName, parentRowIndex}) {
                   ref={element =>
                     (menuItemRefs.current[parentRowIndex + itemIndex] = element)
                   }
+                  onKeyDown={event => myOnKeyDown(event, menuItemActiveIndex)}
                 >
                   <button>{item}</button>
                 </li>
@@ -109,6 +121,7 @@ function Menu({buttonName, parentRowIndex}) {
                   ref={element =>
                     (menuItemRefs.current[parentRowIndex + itemIndex] = element)
                   }
+                  onKeyDown={event => myOnKeyDown(event)}
                 >
                   <button>{item}</button>
                 </li>
