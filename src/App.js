@@ -24,12 +24,34 @@ function Menu({buttonName, parentRowIndex}) {
   const menuItems = {download: 'download', view: 'view', delete: 'delete'};
   const menuItemRefs = useRef(createMenuItemRefs(menuItems, parentRowIndex));
 
+  // focus
   useEffect(() => {
     if (open && menuItemActiveIndex >= 0 && parentRowIndex !== '') {
       console.log('focus!!');
       menuItemRefs.current[parentRowIndex + menuItemActiveIndex].focus();
     }
   }, [menuItemActiveIndex, open, parentRowIndex]);
+
+  const buttonClickOutside = event => {
+    if (event.target.nodeName !== 'HTML') {
+      setOpen(false);
+      return;
+    }
+    setOpen(false);
+  };
+
+  // close
+  useEffect(() => {
+    if (open) {
+      document.addEventListener('click', buttonClickOutside);
+    } else {
+      document.removeEventListener('click', buttonClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', buttonClickOutside);
+    };
+  }, [open]);
 
   const buttonIconOnClick = (event, parentRowIndex) => {
     // close it
