@@ -63,10 +63,17 @@ function Menu({buttonName, parentRowIndex}) {
     //console.log('keycode', event.keyCode);
 
     if (event.keyCode === 13) {
-      console.log('enter press fire redux event');
+      console.log('enter press fire redux event', menuItemActiveIndex);
     } else if (event.keyCode === 40) {
-      console.log('down');
-      setMenuItemActiveIndex(menuItemActiveIndex + 1);
+      if (menuItemActiveIndex < Object.keys(menuItems).length - 1) {
+        console.log('down');
+        setMenuItemActiveIndex(menuItemActiveIndex + 1);
+      }
+    } else if (event.keyCode === 38) {
+      if (menuItemActiveIndex > 0) {
+        console.log('up');
+        setMenuItemActiveIndex(menuItemActiveIndex - 1);
+      }
     }
   };
 
