@@ -5,50 +5,42 @@ function Menu({buttonName, menuIndex, currRowInd, setCurrRowInd}) {
   const [open, setOpen] = useState(false);
   const menuItems = {download: 'download', view: 'view', delete: 'delete'};
   const [isMenuActioned, setIsMenuActioned] = useState(false);
+  const [isCurrRowAction, setIsCurrRowAction] = useState(false);
 
-  /*
+  // -- 2 --
   useEffect(() => {
-    // * something is clicked for that button
-    if (isMenuActioned) {
-      // this menu is focus
+    console.log('-- 2 --');
+    if (isCurrRowAction) {
       if (currRowInd === menuIndex) {
+        //test
+        console.log('-- 2.1 --', 'toggle');
         setOpen(!open);
       } else {
         //test
-        console.log('never call!!!!!!!!!');
+        console.log('-- 2.1 --', '@ this never call????');
         setOpen(false);
       }
     }
 
     return () => {
-      // no longer click
-      setIsMenuActioned(false);
+      // test
+      console.log('-- 2.1 --', 'clean up');
+      //setOpen(false);
+      setIsCurrRowAction(false);
     };
-  }, [isMenuActioned, currRowInd, menuIndex, open]);
-  */
+  }, [isCurrRowAction, currRowInd, menuIndex]);
 
-  // -- 2 --
+  // -- 1 --
   useEffect(() => {
-    if (currRowInd === menuIndex) {
-      setOpen(!open);
-    } else {
-      setOpen(false);
+    console.log('-- 1 --');
+    if (isMenuActioned) {
+      setCurrRowInd(menuIndex);
+      setIsCurrRowAction(true);
     }
 
     return () => {
       // test
-      console.log('clean up set open false');
-      setOpen(false);
-    };
-  }, [currRowInd]);
-
-  // -- 1 --
-  useEffect(() => {
-    if (isMenuActioned) {
-      setCurrRowInd(menuIndex);
-    }
-
-    return () => {
+      console.log('-- 1.1 --', 'clean up');
       setIsMenuActioned(false);
     };
   }, [isMenuActioned]);
