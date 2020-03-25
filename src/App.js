@@ -45,8 +45,6 @@ function Menu({buttonName, menuIndex, currRowInd, setCurrRowInd}) {
   // -- 1 --
   useEffect(() => {
     if (isMenuActioned) {
-      // that menu got focus
-      setCurrRowInd('');
       setCurrRowInd(menuIndex);
     }
 
