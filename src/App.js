@@ -3,54 +3,16 @@ import React, {useState, useEffect} from 'react';
 function Menu({buttonName, menuIndex, currRowInd, setCurrRowInd}) {
   // inside menu
   const [open, setOpen] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const menuItems = {download: 'download', view: 'view', delete: 'delete'};
-  const [isMenuActioned, setIsMenuActioned] = useState(false);
-  const [isCurrRowAction, setIsCurrRowAction] = useState(false);
 
-  // -- 2 --
   useEffect(() => {
-    console.log('-- 2 --');
-    if (isCurrRowAction) {
-      if (currRowInd === menuIndex) {
-        //test
-        console.log('-- 2.1 --', 'toggle');
-        setOpen(!open);
-      } else {
-        //test
-        console.log('-- 2.1 --', '@ this never call????');
-        setOpen(false);
-      }
+    if (open && menuIndex === currRowInd) {
+      setShowMenu(true);
+    } else {
+      setShowMenu(false);
     }
-
-    return () => {
-      // test
-      console.log('-- 2.1 --', 'clean up');
-      //setOpen(false);
-      setIsCurrRowAction(false);
-    };
-  }, [isCurrRowAction, currRowInd, menuIndex]);
-
-  // -- 1 --
-  useEffect(() => {
-    console.log('-- 1 --');
-    if (isMenuActioned) {
-      setCurrRowInd(menuIndex);
-      setIsCurrRowAction(true);
-    }
-
-    return () => {
-      // test
-      console.log('-- 1.1 --', 'clean up');
-      setIsMenuActioned(false);
-    };
-  }, [isMenuActioned]);
-
-  const itemOnClick = (event, itemIndex) => {
-    // it is mouse click
-    if (event.pageX !== 0 && event.pageY !== 0) {
-      console.log('item click fire redux event', itemIndex);
-    }
-  };
+  }, [open, currRowInd]);
 
   return (
     <div>
@@ -58,19 +20,15 @@ function Menu({buttonName, menuIndex, currRowInd, setCurrRowInd}) {
         onClick={event => {
           // it is mouse click
           if (event.pageX !== 0 && event.pageY !== 0) {
-            //test
-            console.log('parent buttonicon onclick: ');
-
-            // something clicked
-            setIsMenuActioned(true);
+            // toggle
+            setOpen(!open);
+            setCurrRowInd(menuIndex);
           }
         }}
       >
         {buttonName}
       </button>
-
-      {/*{open && menuIndex === currRowInd && (*/}
-      {open && (
+      {showMenu && (
         <ul style={{padding: '5px', margin: '10px', border: '1px solid #ccc'}}>
           {Object.keys(menuItems).map((item, itemIndex) => {
             return (
@@ -81,9 +39,6 @@ function Menu({buttonName, menuIndex, currRowInd, setCurrRowInd}) {
                   listStyle: 'none',
                   padding: '5px',
                   backgroundColor: 'blue'
-                }}
-                onClick={event => {
-                  itemOnClick(event, itemIndex);
                 }}
               >
                 {item}
